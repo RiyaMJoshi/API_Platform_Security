@@ -2,6 +2,7 @@
 
 namespace App\tests\Functional;
 
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use App\Entity\User;
@@ -11,6 +12,8 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class CheeseListingResourceTest extends ApiTestCase
 {
+    use ReloadDatabaseTrait;
+
     public function testCreateCheeseListing()
     {
         $client = self::createClient();
@@ -23,8 +26,8 @@ class CheeseListingResourceTest extends ApiTestCase
         $this->assertResponseStatusCodeSame(401);
         
         $user = new User();
-        $user->setEmail('cheeseplease@example.com');
-        $user->setUsername('cheeseplease');
+        $user->setEmail('riyajoshi312@gmail.com');
+        $user->setUsername('riyaJoshi');
         $user->setPassword('$argon2id$v=19$m=65536,t=6,p=1$AIC3IESQ64NgHfpVQZqviw$1c7M56xyiaQFBjlUBc7T0s53/PzZCjV56lbHnhOUXx8');
         $em = $container->get('doctrine')->getManager();
         $em->persist($user);
@@ -33,7 +36,7 @@ class CheeseListingResourceTest extends ApiTestCase
         $client->request('POST', '/login', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'email' => 'cheeseplease@example.com',
+                'email' => 'riyajoshi312@gmail.com',
                 'password' => 'foo'
             ],
         ]);
