@@ -5,6 +5,7 @@ namespace App\Test;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CustomApiTestCase extends ApiTestCase
 {
@@ -49,6 +50,12 @@ class CustomApiTestCase extends ApiTestCase
         $this->logIn($client, $email, $password);
 
         return $user;
+    }
+
+    protected function getEntityManager(): EntityManagerInterface
+    {
+        $container = static::getContainer();
+        return $container->get('doctrine')->getManager();
     }
 }
 
