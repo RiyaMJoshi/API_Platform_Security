@@ -68,6 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Groups({"user:write"}) 
+     * @SerializedName("password")
     */
     private $plainPassword;
 
