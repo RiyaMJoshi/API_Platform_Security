@@ -56,6 +56,17 @@ class UserResourceTest extends CustomApiTestCase
 
         $data = $client->getResponse()->toArray();
         $this->assertArrayNotHasKey('phoneNumber', $data);
+
+        // Refresh the user and elevate
+        $user = $em->getRepository(User::class)->find($user->getId());
+        $user->setRoles(['ROLE_ADMIN']);
+        $em->flush();
+        $this->logIn($client, 'riyajoshi312@gmail.com', 'foo');
+
+        $client->request('GET', '/api/users/'.$user->getId());
+        $this->assertJsonContains([
+            'phoneNumber' => '555.123.4567'
+        ]);
     }
 }
 
