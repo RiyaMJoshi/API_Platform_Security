@@ -25,7 +25,10 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  * @ApiResource(
  *      collectionOperations={
  *          "get"={"security" = "is_granted('ROLE_USER')"},
- *          "post"={"Security"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"},
+ *          "post"={
+ *              "Security"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
+ *              "validation_groups"={ "Default", "create" }
+ *          },
  *      },
  *      itemOperations={
  *          "get"={"security" = "is_granted('ROLE_USER')"},
@@ -69,6 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @Groups({"user:write"}) 
      * @SerializedName("password")
+     * @Assert\NotBlank(groups={"create"})
     */
     private $plainPassword;
 
