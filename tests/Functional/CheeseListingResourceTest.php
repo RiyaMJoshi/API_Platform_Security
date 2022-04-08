@@ -66,9 +66,10 @@ class CheeseListingResourceTest extends CustomApiTestCase
 
         $this->logIn($client, 'riyajoshi2@gmail.com', 'foo');
         $client->request('PUT', '/api/cheeses/'.$cheeseListing->getId(), [
-            'json' => ['title' => 'updated']
+            // try to trick security by reassigning to this user
+            'json' => ['title' => 'updated', 'owner' => '/api/users/'.$user2->getId()]
         ]);
-        $this->assertResponseStatusCodeSame(403);
+        $this->assertResponseStatusCodeSame(403, 'only author can updated');
         // var_dump($client->getResponse()->getContent(false));
 
 
