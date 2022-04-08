@@ -60,6 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user:write"})
      */
     private $roles = [];
 
@@ -88,6 +89,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Valid()
      */
     private $cheeseListings;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"user:read", "user:write"})
+     */
+    private $phoneNumber;
 
     public function __construct()
     {
@@ -221,6 +228,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPlainPassword(string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(?string $phoneNumber): self
+    {
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
