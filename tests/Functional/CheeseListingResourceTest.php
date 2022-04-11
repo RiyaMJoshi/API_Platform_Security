@@ -25,7 +25,9 @@ class CheeseListingResourceTest extends CustomApiTestCase
         ]);
         $this->assertResponseStatusCodeSame(401);
         
-        $this->createUserAndLogIn($client, 'riyajoshi312@gmail.com', 'foo');
+        $authenticatedUser = $this->createUserAndLogIn($client, 'riyajoshi312@gmail.com', 'foo');
+        $otherUser = $this->createUser('otheruser@example.com', 'foo');
+
 
         // Try doing the below code for returning 201 status code
 
@@ -44,7 +46,23 @@ class CheeseListingResourceTest extends CustomApiTestCase
         $client->request('POST', '/api/cheeses', [
             'json' => [],
         ]);
-        $this->assertResponseStatusCodeSame(422);
+        $this->assertResponseStatusCodeSame(422);  // 422 because of validation failure
+
+        $cheesyData = [
+            'title' => "title1Cheese.. green",
+            'description' => "desc1cheese.. green",
+            'price' => 3000
+        ];
+
+        $client->request('POST', '/api/cheeses', [
+            'json' => $cheesyData + ['owner' => '/api/users/'.$otherUser->getId()],
+        ]);
+        $this->assertResponseStatusCodeSame(422, 'Not passing the correct owner');
+
+        $client->request('POST', '/api/cheeses', [
+            'json' => $cheesyData + ['owner' => '/api/users/'.$authenticatedUser->getId()],
+        ]);
+        $this->assertResponseStatusCodeSame(201);
     }
 
     public function testUpdateCheeseListing()
