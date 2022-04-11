@@ -7,7 +7,7 @@ use App\Repository\CheeseListingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Carbon\Carbon;
 use ApiPlatform\Core\Api\FilterInterface;
-
+use App\Validator\IsValidOwner;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -104,6 +104,7 @@ class CheeseListing
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="cheeseListings")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"cheese:read","cheese:collection:post"})
+     * @IsValidOwner()
      */
     private $owner;
 
