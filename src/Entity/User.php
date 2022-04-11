@@ -92,7 +92,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"admin:read", "user:write"})
+     * @Groups({"admin:read", "owner:read", "user:write"})
      */
     private $phoneNumber;
 
