@@ -2,11 +2,21 @@
 
 namespace App\Validator;
 
+use App\Entity\User;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class IsValidOwnerValidator extends ConstraintValidator
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        # code...
+        $this->security = $security;
+    }
+
     public function validate($value, Constraint $constraint)
     {
         /* @var App\Validator\IsValidOwner $constraint */
@@ -15,8 +25,24 @@ class IsValidOwnerValidator extends ConstraintValidator
             return;
         }
 
-        // TODO: implement the validation here
-        $this->context->buildViolation($constraint->message)
-            ->addViolation();
+        $user = $this->security->getUser();
+        if (!$user instanceof User) {
+            $this->context->buildViolation($constraint->annonymousMessage)
+                ->addViolation();
+
+            return;
+        }
+
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            return;
+        }
+        if (!$value instanceof User) {
+            throw new \InvalidArgumentException('@IsValidOwner constraint must be put on a property containing a User object');
+        }
+
+        if ($value->getId() !== $user->getId()) {
+            $this->context->buildViolation($constraint->message)
+                ->addViolation();
+        }
     }
 }

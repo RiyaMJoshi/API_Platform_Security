@@ -105,6 +105,7 @@ class CheeseListing
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"cheese:read","cheese:collection:post"})
      * @IsValidOwner()
+     * @Assert\NotBlank()
      */
     private $owner;
 

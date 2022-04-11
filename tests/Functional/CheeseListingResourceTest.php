@@ -28,6 +28,11 @@ class CheeseListingResourceTest extends CustomApiTestCase
         $authenticatedUser = $this->createUserAndLogIn($client, 'riyajoshi312@gmail.com', 'foo');
         $otherUser = $this->createUser('otheruser@example.com', 'foo');
 
+        $cheesyData = [
+            'title' => "title1Cheese.. green",
+            'description' => "desc1cheese.. green",
+            'price' => 3000
+        ];
 
         // Try doing the below code for returning 201 status code
 
@@ -44,15 +49,11 @@ class CheeseListingResourceTest extends CustomApiTestCase
         
 
         $client->request('POST', '/api/cheeses', [
-            'json' => [],
+            'json' => $cheesyData,
         ]);
-        $this->assertResponseStatusCodeSame(422);  // 422 because of validation failure
+        $this->assertResponseStatusCodeSame(422, 'Missing owner');  // 422 because of validation failure
 
-        $cheesyData = [
-            'title' => "title1Cheese.. green",
-            'description' => "desc1cheese.. green",
-            'price' => 3000
-        ];
+        
 
         $client->request('POST', '/api/cheeses', [
             'json' => $cheesyData + ['owner' => '/api/users/'.$otherUser->getId()],
