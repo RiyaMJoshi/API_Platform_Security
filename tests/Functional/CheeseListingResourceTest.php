@@ -51,7 +51,7 @@ class CheeseListingResourceTest extends CustomApiTestCase
         $client->request('POST', '/api/cheeses', [
             'json' => $cheesyData,
         ]);
-        $this->assertResponseStatusCodeSame(422, 'Missing owner');  // 422 because of validation failure
+        $this->assertResponseStatusCodeSame(201);  // 422 because of validation failure
 
         
 

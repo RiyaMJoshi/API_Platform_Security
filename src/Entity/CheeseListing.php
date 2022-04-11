@@ -41,7 +41,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
 
  * )
- * @ORM\Entity(repositoryClass=CheeseListingRepository::class),
  * @ApiFilter(BooleanFilter::class,properties={"isPublished"})
  * @ApiFilter(SearchFilter::class,properties={
  *      "title": "partial",
@@ -51,6 +50,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  * @ApiFilter(RangeFilter::class, properties={"price"})
  * @ApiFilter(PropertyFilter::class)
+ * @ORM\Entity(repositoryClass=CheeseListingRepository::class)
+ * @ORM\EntityListeners({"App\Doctrine\CheeseListingSetOwnerLisener"})
  */
 class CheeseListing
 {
@@ -105,7 +106,6 @@ class CheeseListing
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"cheese:read","cheese:collection:post"})
      * @IsValidOwner()
-     * @Assert\NotBlank()
      */
     private $owner;
 
