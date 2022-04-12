@@ -9,13 +9,13 @@ use App\Entity\User;
 
 class UserDataPersister implements DataPersisterInterface
 {
-    private $entityManager;
+    private $decoratedDataPersister;
 
     private $userPasswordHasher;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher)
+    public function __construct(DataPersisterInterface $decoratedDataPersister, UserPasswordHasherInterface $userPasswordHasher)
     {
-        $this->entityManager = $entityManager;
+        $this->decoratedDataPersister = $decoratedDataPersister;
         $this->userPasswordHasher = $userPasswordHasher;
     }
 
@@ -35,13 +35,11 @@ class UserDataPersister implements DataPersisterInterface
             );
             $data->eraseCredentials();
         }
-        $this->entityManager->persist($data);
-        $this->entityManager->flush();
+        $this->decoratedDataPersister->persist($data);
     }
     public function remove($data)
     {
-        $this->entityManager->remove($data);
-        $this->entityManager->flush();
+        $this->decoratedDataPersister->remove($data);
     }
 }
 ?>
