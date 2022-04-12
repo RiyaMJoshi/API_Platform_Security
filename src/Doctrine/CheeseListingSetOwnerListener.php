@@ -5,7 +5,7 @@ namespace App\Doctrine;
 use App\Entity\CheeseListing;
 use Symfony\Component\Security\Core\Security;
 
-class CheeseListingSetOwnerLisener 
+class CheeseListingSetOwnerListener 
 {
     private $security;
 

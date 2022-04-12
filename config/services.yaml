@@ -33,5 +33,5 @@ services:
         decoration_priority: -20
 
     App\Doctrine\CheeseListingSetOwnerListener:
-        tags: [doctrine.orm.entity_listener]
+        tags: ['doctrine.orm.entity_listener']
     

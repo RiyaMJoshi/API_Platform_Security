@@ -51,7 +51,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(RangeFilter::class, properties={"price"})
  * @ApiFilter(PropertyFilter::class)
  * @ORM\Entity(repositoryClass=CheeseListingRepository::class)
- * @ORM\EntityListeners({"App\Doctrine\CheeseListingSetOwnerLisener"})
+ * @ORM\EntityListeners({"App\Doctrine\CheeseListingSetOwnerListener"})
  */
 class CheeseListing
 {

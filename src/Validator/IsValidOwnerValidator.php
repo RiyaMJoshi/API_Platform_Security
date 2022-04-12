@@ -13,7 +13,6 @@ class IsValidOwnerValidator extends ConstraintValidator
 
     public function __construct(Security $security)
     {
-        # code...
         $this->security = $security;
     }
 
